@@ -27,28 +27,26 @@ public class Section07_HashChaining {
     public boolean saveData(String key, String value){
         int address = this.hashFunc(key);
 
-        Slot slot = this.hashTable[address];
+        Slot findSlot = this.hashTable[address];
+        Slot prevSlot = findSlot;
 
         // 최초 저장
-        if(slot == null){
+        if(findSlot == null){
             this.hashTable[address] = new Slot(key, value);
             return true;
         }
 
-        while (slot.next != null){
-
-            System.out.println(slot.key);
-            // 키가 동일하고 value 만 바뀌는 경우
-            System.out.println(slot.key.equals(key));
-            if(slot.key == key){
-                slot.value = value;
+        while(findSlot != null){
+            if(findSlot.key.equals(key)){
+                findSlot.value = value;
                 return true;
             }
 
-            slot = slot.next;
+            prevSlot = findSlot;
+            findSlot = findSlot.next;
         }
 
-        slot.next = new Slot(key, value);
+        prevSlot.next = new Slot(key, value);
         return true;
     }
 
