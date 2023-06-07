@@ -13,6 +13,31 @@ public class Section05_MergeSort {
 
     public List<Integer> merge(List<Integer> leftList, List<Integer> rightList){
 
+        List<Integer> resultList = new ArrayList<>();
+
+        int leftIdx = 0;
+        int rightIdx = 0;
+
+        while (leftIdx < leftList.size() && rightIdx < rightList.size()){
+            if(leftList.get(leftIdx) < rightList.get(rightIdx)){
+                resultList.add(leftList.get(leftIdx));
+                leftIdx++;
+            }else{
+                resultList.add(rightList.get(rightIdx));
+                rightIdx++;
+            }
+        }
+        System.out.println(resultList);
+
+        if(leftIdx < leftList.size()){
+            resultList.addAll(leftList.subList(leftIdx, leftList.size()));
+        }
+
+        if(rightIdx < rightList.size()){
+            resultList.addAll(rightList.subList(rightIdx, rightList.size()));
+        }
+        System.out.println(resultList);
+        return resultList;
     }
 
     public List<Integer> mergeSplitFunc(List<Integer> dataList){
@@ -27,11 +52,7 @@ public class Section05_MergeSort {
         return merge(mergeSplitFunc(leftList), mergeSplitFunc(rightList));
     }
 
-    public List<Integer> sort(List<Integer> dataList){
 
-
-        return dataList;
-    }
 
     public static void main(String[] args) {
         Section05_MergeSort mergeSort = new Section05_MergeSort();
@@ -39,8 +60,7 @@ public class Section05_MergeSort {
         for (int i = 0; i < 20; i++) {
             list.add((int)(Math.random()*100));
         }
-        System.out.println(list);
-        System.out.println(mergeSort.sort(list));
+        System.out.println(mergeSort.mergeSplitFunc(list));
     }
 
 
