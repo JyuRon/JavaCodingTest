@@ -11,6 +11,12 @@ import java.util.List;
  * 데이터 추가시 마지막 배열에 추가하고 부모노드와 비교하여 스압하는 과정을 반복한다.
  * 데이터 삭제시 제일 마지막 노드를 첫번째로 변경 하고 자식노드와 비교하여 가장 큰 자식노드와 스압하는 과정을 반복
  */
+
+/**
+ * 시간복잡도
+ * 일반적인 경우 logN
+ * 일자 형태로 유지된 경우 n
+ */
 public class Section10_MaxHeap {
 
     List<Integer> heapArray;

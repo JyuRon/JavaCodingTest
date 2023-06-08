@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Bubble Sort : idx, idx+1 과 비교하여 큰 값을 오른쪽으로 밀어 넣는다.
+ * 시간복잡도 : n^2
  */
 public class Section01_BubbleSort {
 

@@ -1,5 +1,10 @@
 package com.example.a_DataStructure;
 
+/**
+ * 시간복잡도
+ * 일반적인 경우 logN
+ * 일자 형태로 유지된 경우 n
+ */
 public class Section09_BinarySearchTree {
     // 데이터가 동일한 경우 오른쪽으로 탐색하도록 한다.
 

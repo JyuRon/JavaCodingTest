@@ -1,5 +1,9 @@
 package com.example.a_DataStructure;
 
+/**
+ * 시간복잡도 : n
+ * 최악의 경우(Collision이 모두 발생하는 경우)는 O(n)
+ */
 public class Section06_Hash {
 
     public Slot[] hashTable;

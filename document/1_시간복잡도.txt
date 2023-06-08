@@ -1,0 +1,17 @@
+1. Hash
+    - 일반적인 경우(Collision이 없는 경우)는 O(1)
+    - 최악의 경우(Collision이 모두 발생하는 경우)는 O(n)
+    - Linear Probing, Chaining 기법 둘 다 동일
+
+2. Tree, Heap
+    - 일반적인 경우 logN
+    - 일자 형태로 유지된 경우 n
+
+3. BubbleSort, SelectionSort, InsertionSort
+    - n^2
+
+4. Merge Sort
+    - nlogn
+
+
+
