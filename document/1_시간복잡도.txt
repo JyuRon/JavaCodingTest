@@ -1,3 +1,4 @@
+============ 자료구조 ============
 1. Hash
     - 일반적인 경우(Collision이 없는 경우)는 O(1)
     - 최악의 경우(Collision이 모두 발생하는 경우)는 O(n)
@@ -7,11 +8,21 @@
     - 일반적인 경우 logN
     - 일자 형태로 유지된 경우 n
 
-3. BubbleSort, SelectionSort, InsertionSort
+============ 정렬 ============
+1. BubbleSort, SelectionSort, InsertionSort
     - n^2
 
-4. Merge Sort
+2. Merge Sort, Quick Sort
     - nlogn
+
+
+============ 탐색 ============
+1. BinarySearch
+    - logn
+
+2. SequencialSearch
+    - n
+
 
 
 
