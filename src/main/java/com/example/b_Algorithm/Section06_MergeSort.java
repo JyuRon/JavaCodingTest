@@ -10,7 +10,7 @@ import java.util.List;
  * 두 부분 리스트를 다시 하나의 정렬된 리스트로 합병한다.
  * 시간복잡도 : nlogn
  */
-public class Section05_MergeSort {
+public class Section06_MergeSort {
 
     public List<Integer> merge(List<Integer> leftList, List<Integer> rightList){
 
@@ -56,7 +56,7 @@ public class Section05_MergeSort {
 
 
     public static void main(String[] args) {
-        Section05_MergeSort mergeSort = new Section05_MergeSort();
+        Section06_MergeSort mergeSort = new Section06_MergeSort();
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add((int)(Math.random()*100));
