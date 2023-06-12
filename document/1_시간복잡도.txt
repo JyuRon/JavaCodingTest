@@ -29,5 +29,8 @@
 4. dijkstra
     - ElogE ( E : 간선 수)
 
+5. kruskal
+    - ElogE (E : 간선 수)
+
 
 
