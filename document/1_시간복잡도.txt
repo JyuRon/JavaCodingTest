@@ -23,6 +23,11 @@
 2. SequencialSearch
     - n
 
+3. BFS, DFS
+    - V + E (간선 + 노드 수)
+
+4. dijkstra
+    - ElogE ( E : 간선 수)
 
 
 
