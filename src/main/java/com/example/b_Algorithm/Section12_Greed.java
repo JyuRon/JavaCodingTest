@@ -88,25 +88,3 @@ public class Section12_Greed {
     }
 }
 
-class Edge implements Comparable<Edge>{
-    double distance;
-    String name;
-
-    public Edge(double distance, String name) {
-        this.distance = distance;
-        this.name = name;
-    }
-
-    @Override
-    public int compareTo(Edge edge) {
-        return (int)(this.distance - edge.distance);
-    }
-
-    @Override
-    public String toString() {
-        return "Edge{" +
-                "distance=" + distance +
-                ", name='" + name + '\'' +
-                '}';
-    }
-}
