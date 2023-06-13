@@ -2,6 +2,10 @@ package com.example.b_Algorithm;
 
 import java.util.*;
 
+/**
+ * 최소 신장 알고리즘 : 최소한의 비용으로 모든 간선을 연결
+ * 시간복잡도 : ElogE (E : 간선 수)
+ */
 public class Section15_Prim {
 
     public List<EdgeMST> primFunc(String startNode, List<EdgeMST> edges){

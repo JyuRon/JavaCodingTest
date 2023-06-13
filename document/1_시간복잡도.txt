@@ -29,7 +29,7 @@
 4. dijkstra
     - ElogE ( E : 간선 수)
 
-5. kruskal
+5. kruskal, prim
     - ElogE (E : 간선 수)
 
 
