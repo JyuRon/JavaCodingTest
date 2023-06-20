@@ -2,7 +2,9 @@ package com.example.c_BruteForce;
 
 import java.util.Arrays;
 import java.util.Scanner;
-
+/**
+ * https://www.acmicpc.net/problem/15663
+ */
 public class Q08_15663 {
 
     static int N, M;
