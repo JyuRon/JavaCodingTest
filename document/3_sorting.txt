@@ -1,0 +1,7 @@
+Inplace
+    - 정렬하는 과정에서 크기 N에 비해 충분히 무시할 만한 추가 메모리를 사용하는가
+    - primitive(기본 자료형) 정렬 : Dual-Pivot Quick Sort 가 이에 해당
+
+Stable
+    - 동등한 위상의 원소들의 순서 관계가 보전되는가
+    - Object 정렬 : Tim Sort
