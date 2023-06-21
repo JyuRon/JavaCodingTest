@@ -36,13 +36,6 @@ public class Q01_7795 {
         int count = 0;
 
         for (int i = 0; i < aSize; i++) {
-//            if(a.get(i) > b.get(bSize-1)){
-//                count += bSize;
-//            }else if(a.get(i) < b.get(0)){
-//                count += 0;
-//            }else{
-//                count += search(a.get(i), b);
-//            }
             count += search(a.get(i), b);
         }
 
