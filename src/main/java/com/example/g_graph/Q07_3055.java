@@ -16,10 +16,15 @@ public class Q07_3055 {
     static String[] graph;
     static int[][] dir = {{-1,0},{1,0},{0,-1},{0,1}};
     static int result = Integer.MAX_VALUE;
+
+
     static int[][] distance;
     static boolean[][] visited;
-    static int[][] existWater;
-    static int waterCount = 0;
+
+
+    static int[][] waterDistance;
+
+
     static boolean[][] waterVisited;
 
     static void input(){
@@ -28,11 +33,12 @@ public class Q07_3055 {
 
         distance = new int[R][C];
         visited = new boolean[R][C];
-        waterVisited = new boolean[R][C];
+
+
 
         graph = new String[R];
 
-        existWater = new int[R*C][2];
+
 
         for (int i = 0; i < R; i++) {
             graph[i] = sc.next();
@@ -50,22 +56,65 @@ public class Q07_3055 {
                     animalX = i; animalY = j;
                 }else if(graph[i].charAt(j) == 'D'){
                     houseX = i; houseY = j;
-                }else if(graph[i].charAt(j) == '*'){
-                    existWater[waterCount][0] = i;
-                    existWater[waterCount][1] = j;
-                    waterCount++;
+                }
+            }
+        }
+        addWater();
+        waterDistance[houseX][houseY] = -1;
+
+        moveAnimal(animalX, animalY);
+        result = distance[houseX][houseY];
+    }
+
+
+    static void addWater(){
+        waterVisited = new boolean[R][C];
+        waterDistance = new int[R][C];
+        Queue<Integer> Q = new LinkedList<>();
+
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                waterDistance[i][j] = -1;
+                if(graph[i].charAt(j) == '*'){
+                    Q.add(i);
+                    Q.add(j);
+                    waterDistance[i][j] = 0;
+                    waterVisited[i][j] = true;
                 }
             }
         }
 
-        for (int i = 0; i < waterCount; i++) {
-            addWater(existWater[i][0], existWater[i][1], animalX, animalY);
+
+        while (!Q.isEmpty()){
+            int x = Q.poll();
+            int y = Q.poll();
+
+            for (int i = 0; i < 4; i++) {
+                int nextX = x + dir[i][0];
+                int nextY = y + dir[i][1];
+
+                // 영역을 벗어나는 경우
+                if(nextX < 0 || nextY < 0 || nextX >= R || nextY >= C){
+                    continue;
+                }
+
+                // 이미 방문 기록이 있는 경우
+                if(waterVisited[nextX][nextY]){
+                    continue;
+                }
+
+                // 이동 불가 지역인 경우
+                if(graph[nextX].charAt(nextY) == 'X' || graph[nextX].charAt(nextY) == 'D'){
+                    continue;
+                }
+
+                Q.add(nextX);
+                Q.add(nextY);
+                waterDistance[nextX][nextY] = waterDistance[x][y] + 1;
+                waterVisited[nextX][nextY] = true;
+            }
+
         }
-
-        moveAnimal(animalX, animalY);
-
-        result = distance[houseX][houseY];
-
     }
 
     static void moveAnimal(int animalX, int animalY){
@@ -82,58 +131,42 @@ public class Q07_3055 {
             for (int i = 0; i < 4; i++) {
 
                 int nextX = x + dir[i][0];
-                int nextY = x + dir[i][1];
+                int nextY = y + dir[i][1];
 
-                if(nextX >= 0 && nextY >= 0 && nextX < R && nextY < C && !visited[nextX][nextY] && graph[nextX].charAt(nextY) == '.'){
-                    distance[nextX][nextY] = distance[x][y] + 1;
-                    visited[nextX][nextY] = true;
-                    Q.add(nextX);
-                    Q.add(nextY);
+                // 범위를 벗어나는 경우
+                if(nextX < 0 || nextY < 0 || nextX >= R || nextY >= C ){
+                    continue;
                 }
+
+                // 이미 방문한 이력이 있는 경우
+                if(visited[nextX][nextY]){
+                    continue;
+                }
+
+                // 이동불가 지역인 경우
+                if(graph[nextX].charAt(nextY) == '*' || graph[nextX].charAt(nextY) == 'X'){
+                    continue;
+                }
+
+                // 웅덩이가 존재하거나 이동 직후 생기는 경우
+                if(distance[x][y] + 1 >= waterDistance[nextX][nextY] && waterDistance[nextX][nextY] != -1){
+                    continue;
+                }
+
+                distance[nextX][nextY] = distance[x][y] + 1;
+                visited[nextX][nextY] = true;
+                Q.add(nextX);
+                Q.add(nextY);
+
             }
         }
-
     }
 
-    static void addWater(int x, int y, int animalX, int animalY){
-        if(animalX == x && animalY == y){
-            return;
-        }
 
-        waterVisited[x][y] = true;
-
-
-        for (int i = 0; i < 4; i++) {
-            int nextX = x + dir[i][0];
-            int nextY = y + dir[i][1];
-
-            if(nextX >= 0 && nextY >= 0 && nextX < R && nextY < C && !waterVisited[nextX][nextY] && graph[nextX].charAt(nextY) != 'X'){
-
-                for (int j = 0; j < 4; j++) {
-
-                    int nextAnimalX = x + dir[i][0];
-                    int nextAnimalY = x + dir[i][1];
-
-                    if(nextAnimalX >= 0 && nextAnimalY >= 0 && nextAnimalX < R && nextAnimalY < C && !visited[nextAnimalX][nextAnimalY] && graph[nextAnimalX].charAt(nextAnimalY) == '.'){
-                        distance[nextAnimalX][nextAnimalY] = distance[animalX][animalY] + 1;
-                        visited[nextAnimalX][nextAnimalY] = true;
-                        addWater(nextX, nextY, nextAnimalX, animalY);
-                        distance[nextAnimalX][nextAnimalY] = 0;
-                        visited[nextAnimalX][nextAnimalY] = false;
-                    }
-                }
-            }
-
-        }
-
-        if(animalX == ho)
-    }
 
     public static void main(String[] args) {
         input();
         func();
-
-
 
         if(result == 0){
             System.out.println("KAKTUS");
