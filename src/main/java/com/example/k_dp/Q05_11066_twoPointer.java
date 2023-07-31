@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 /**
  * https://www.acmicpc.net/problem/11066
  */
-public class Q05_11066 {
+public class Q05_11066_twoPointer {
     static FastReader sc = new FastReader();
     static int testCase, N;
     static int[] A;
