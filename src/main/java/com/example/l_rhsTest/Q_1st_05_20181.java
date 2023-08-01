@@ -13,37 +13,49 @@ public class Q_1st_05_20181 {
     static FastReader sc = new FastReader();
     static int N,K;
     static int[] value;
-    static long result;
+    static long[] Dy;
     static void input(){
         N = sc.nextInt();
         K = sc.nextInt();
         value = new int[N+1];
+        Dy = new long[N+1];
         for (int i = 1; i <= N ; i++) {
             value[i] = sc.nextInt();
         }
     }
 
     static void func(){
-        int bottom = 1;
-        int top = 1;
-        int count = value[1];
-        int L = 1, R = 1;
-        int tmp = count;
+        int right = 1;
+        long tmp = 0;
+        long leftMaxValue = 0;
 
-        while (bottom <= top){
+        for (int i = 1; i <= N ; i++) {
+            leftMaxValue = Math.max(leftMaxValue, Dy[i-1]);
 
-            if((bottom >= L && bottom <= R) || (top >= L && top <= R) && count > tmp){
-
+            while (right <= N && tmp < K){
+                tmp += value[right++];
             }
 
-            if(count > K) {
-                count -= value[bottom];
-                bottom++;
-            }else if(top < N){
-                top++;
-                count += value[top];
+            if(tmp >= K){
+                Dy[right - 1] = Math.max(leftMaxValue + tmp - K, Dy[right - 1]);
             }
+
+
+            tmp -= value[i];
         }
+
+        long ans = 0;
+        for (int i = 1; i <= N ; i++) {
+            ans = Math.max(ans, Dy[i]);
+        }
+
+        System.out.println(ans);
+
+    }
+
+    public static void main(String[] args) {
+        input();
+        func();
     }
     static class FastReader{
         BufferedReader br;
