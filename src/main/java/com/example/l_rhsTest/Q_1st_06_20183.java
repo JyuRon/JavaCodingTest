@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * https://www.acmicpc.net/problem/20183
  */
-public class Q_1st_08_20183 {
+public class Q_1st_06_20183 {
     static FastReader sc = new FastReader();
     static int N, M, A, B;
     static long C;
