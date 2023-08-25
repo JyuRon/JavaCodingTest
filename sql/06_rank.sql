@@ -3,7 +3,7 @@
   dense_rank : 1 2 2 3 3 4
   row_number : 1 2 3 4 5 6
 
-  partition 생략가능
+  partition by 생략가능
   문법 : rank() over(partition by column order by column)
  */
 
