@@ -32,3 +32,26 @@ limit 10;
  from tproduction
  where inumber = 'I2003'
  ;
+
+/**
+  15
+  부서별로 연령의 평균을 파악하기 위해서 각 부서마다 속해있는 직원들의 나이로 출생연도를 알아보려한다.
+  이를 위해 부서명, 직원명, 출생연도를 출력하되 각 부서의 직원들을 출생연도가 빠른 순으로 순위를 매겨라.
+  (공동순위는 동일하게 부여하고 그 다음 순위는 공동 순위 다음 번호로 순위가 출력되어야 하며 출생연도는 tEmplyee의 ERRN의 앞 2자리로 비교하여 출력할 수 있다.
+  D1001 부서는 문구생산부, D2001은 가구생산부, D3001은 액세서리생산부, D4001은 전자기기생산부, D5001은 음료생산부이다.)
+ */
+
+ select
+     case dnumber
+         when 'D1001' then '문구생산부'
+         when 'D2001' then '가구생산부'
+         when 'D3001' then '액세서리생산부'
+         when 'D4001' then '전자기기생산부'
+         when 'D5001' then '음료생산부이다'
+         else '부서없음'
+     end as 부서명 ,
+     ename as 직원명,
+     subString(errn,1,2) as 출생년도,
+     dense_rank() over (partition by dnumber order by subString(errn,1,2))
+from temployee;
+
