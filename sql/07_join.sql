@@ -10,3 +10,17 @@ select
 from temployee as emp
 join tdepartment as dept on emp.dnumber = dept.dnumber
 join trank as rank on rank.rnumber = emp.rnumber;
+
+
+/**
+  17
+  2021년 1월의 전자기기류 판매금 정산을 위해 전자기기류 제품들의 제품명과 해당 제품의 총 판매량을 출력하세 요.
+  (전자기기류의 제품코드는 INumber 번호가 I4로 시작한다.)
+ */
+
+select titem.iname,sum(pcount)
+from torder
+join tproduction on torder.pnumber = tproduction.pnumber
+join titem on tproduction.inumber = titem.inumber
+where tproduction.inumber like 'I4%' and to_char(torder.odate, 'yyyy-mm') = '2021-01'
+group by titem.iname;
