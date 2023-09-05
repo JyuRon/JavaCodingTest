@@ -24,3 +24,13 @@ join tproduction on torder.pnumber = tproduction.pnumber
 join titem on tproduction.inumber = titem.inumber
 where tproduction.inumber like 'I4%' and to_char(torder.odate, 'yyyy-mm') = '2021-01'
 group by titem.iname;
+
+/**
+  18
+  2020년 1월에 만들어진 모든 제품의 생산코드, 생산직원명, 제품명, 생산량, 생산일자를 출력하세요 (단, 정렬은 고려하지 않는다 )
+ */
+select prod.pnumber, emp.ename, item.iname, prod.pcount, prod.pdate
+from tproduction as prod
+join temployee emp on prod.enumber = emp.enumber
+join titem item on prod.inumber = item.inumber
+where to_char(prod.pdate, 'yyyy-mm') = '2020-01';
