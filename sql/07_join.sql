@@ -34,3 +34,29 @@ from tproduction as prod
 join temployee emp on prod.enumber = emp.enumber
 join titem item on prod.inumber = item.inumber
 where to_char(prod.pdate, 'yyyy-mm') = '2020-01';
+
+
+/**
+  19
+  2022년 3월 20일 기준으로 현재 판매 가능한 공책의 재고량을 구하시오
+  (반품되어 돌아온 공책의 경우 재판매 하지 않는다.)
+ */
+SELECT tBase.IName AS 제품명, (tBase2.PCount - tBase.OCount) AS 재고량
+FROM
+    (
+        SELECT tit.IName, SUM(tpr.PCount) AS OCount
+        FROM tProduction AS tpr
+        JOIN tOrder AS torON tpr.PNumber = tor.PNumber
+        JOIN tItem AS titON tpr.INumber = tit.INumber
+        WHERE tit.IName = '공책' AND tor.ODate < CAST('20220321' AS TIMESTAMP)
+        GROUP BY tit.IName
+    ) AS tBase
+JOIN
+    (
+        SELECT tit.IName, SUM(tpr.PCount) AS PCount
+        FROM tProduction AS tpr
+        JOIN tItem AS tit ON tpr.INumber = tit.INumber
+        WHERE tit.IName = '공책' AND tpr.PDate < CAST('20220321' AS TIMESTAMP)
+        GROUP BY tit.IName ----------- ⑪
+    ) AS tBase2
+ON tBase.IName = tBase2.IName
