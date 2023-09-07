@@ -46,8 +46,8 @@ FROM
     (
         SELECT tit.IName, SUM(tpr.PCount) AS OCount
         FROM tProduction AS tpr
-        JOIN tOrder AS torON tpr.PNumber = tor.PNumber
-        JOIN tItem AS titON tpr.INumber = tit.INumber
+        JOIN tOrder AS tor ON tpr.PNumber = tor.PNumber
+        JOIN tItem AS tit on tpr.INumber = tit.INumber
         WHERE tit.IName = '공책' AND tor.ODate < CAST('20220321' AS TIMESTAMP)
         GROUP BY tit.IName
     ) AS tBase
@@ -60,3 +60,22 @@ JOIN
         GROUP BY tit.IName ----------- ⑪
     ) AS tBase2
 ON tBase.IName = tBase2.IName
+
+
+/**
+    20
+    2020년 1월의 제품 별 생산량의 순위를 확인하기 위하여 제품명과 생산량을 순위를 매겨 출력하시오.
+    (모든 제품이 출력되어야 하며 공동순위가 있다면 다음 순위는 공동순위의 수 만큼 밀려나고
+  생산되지 않은 제품 은 제일 마지막 순위로 결정되어야 한다)
+ */
+
+select rank() over(order by prod.sum desc nulls last ) as rank , prod.sum, item.iname
+from titem as item
+left outer join (
+    select sum(pcount) as sum, inumber
+    from tproduction
+    where to_char(pdate, 'yyyy-mm') = '2020-01'
+    group by inumber
+) as prod on item.inumber = prod.inumber
+
+
