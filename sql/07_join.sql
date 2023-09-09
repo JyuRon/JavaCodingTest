@@ -76,6 +76,19 @@ left outer join (
     from tproduction
     where to_char(pdate, 'yyyy-mm') = '2020-01'
     group by inumber
-) as prod on item.inumber = prod.inumber
+) as prod on item.inumber = prod.inumber;
 
 
+
+/**
+  21
+  우리 회사의 고객인 ‘오랜문방구’의 반품제품명, 주문코드, 주문량, 반품량, 반품사유를 출력하세요
+ */
+
+select t5.iname, t.onumber, t4.pcount, tre.rcount, t2.rreason
+from treturn tre
+    join torder t on tre.onumber = t.onumber
+    join treturnreason t2 on tre.rrnumber = t2.rrnumber
+    join tproduction t4 on t4.pnumber = t.pnumber
+    join titem t5 on t5.inumber = t4.inumber
+    join (select cnumber from tcustomer cust where cust.cname = '오랜문방구') t3 on t.cnumber = t3.cnumber
