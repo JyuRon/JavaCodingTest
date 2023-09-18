@@ -92,3 +92,73 @@ from treturn tre
     join tproduction t4 on t4.pnumber = t.pnumber
     join titem t5 on t5.inumber = t4.inumber
     join (select cnumber from tcustomer cust where cust.cname = '오랜문방구') t3 on t.cnumber = t3.cnumber
+
+
+/**
+  22
+  퇴사자들이 생산한 제품들 중 반품된 제품들의 정보에 대해 알아보려 한다.
+해당 조건에 맞는 제품을 생산한 직원명과 제품명, 해당 제품의 생산량, 반품량, 반품이유를 출력하시오.
+ */
+
+select t3.ename, t5.iname, t2.pcount, treturn.rcount, t4.rreason
+from treturn
+join torder t1 on treturn.onumber = t1.onumber
+join tproduction t2 on t1.pnumber = t2.pnumber
+join temployee t3 on t2.enumber = t3.enumber
+join treturnreason t4 on treturn.rrnumber = t4.rrnumber
+join titem t5 on t2.inumber = t5.inumber
+where t3.resignationdate is not null;
+
+
+/**
+  23
+  부서별로 생산하는 제품들의 총 생산량을 부서명과 함께 순위를 매겨서 출력하세요
+(부서명, 부서에서 생산하는 제품의 총 생산량, 순위가 나와야 하며 공동순위(ex 공동 1등)가 있어도 다음 순위는 순차적으로 매겨진다.)
+ */
+
+select t.dname ,sum(t2.pcount), dense_rank() over(order by sum(t2.pcount) desc)
+from tdepartment t
+join temployee t1 on t.dnumber = t1.dnumber
+join tproduction t2 on t1.enumber = t2.enumber
+group by t.dname;
+
+
+/**
+  24
+  시장조사를 위하여 불량을 제외한 반품내역을 가진 고객들의 주변에 거주하는 직원들의 명단을 출력하시오
+  (고객들의 주소와 고객명단, 고객 주변에 거주하는 직원명단은 전부 출력되어야 한다)
+
+ */
+select tmp.caddr, tmp.cname, t4.ename
+from (
+         select t3.caddr as caddr, t3.cname as cname
+         from treturn
+                  join treturnreason t on treturn.rrnumber = t.rrnumber
+                  join torder t2 on treturn.onumber = t2.onumber
+                  join tcustomer t3 on t2.cnumber = t3.cnumber
+         where t.rreason <> '불량'
+     ) as tmp
+left join temployee t4 on t4.eaddr = tmp.caddr;
+
+
+
+/**
+  25
+  고객별 반품 현황을 파악하기 위하여 고객별로 고객명과 제품을 구매한 양과 반품한 양 그리고 이를 구매량 대 비 반품량을 반품률로 나타내시오.
+(반품률은 높은 순으로 소숫점 2자리까지 반올림되어 출력되어야하며 반품내역이 없는 값(null)은 0으로 대체 되 면서 마지막에 출력되어야 한다.)
+ */
+select t2.cname as 고객명,
+       sum(t.pcount) as 구매량,
+       COALESCE(sum(t3.rcount),0) as 판매량,
+        coalesce(
+            round(
+                cast((cast(coalesce(sum(t3.rcount),0) as float) / cast(sum(t.pcount) as float)) * 100  as decimal)
+                ,2), 0
+           ) as rate
+
+from torder
+join tproduction t on torder.pnumber = t.pnumber
+join tcustomer t2 on torder.cnumber = t2.cnumber
+left join treturn t3 on torder.onumber = t3.onumber
+group by t2.cname
+order by rate desc
