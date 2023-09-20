@@ -162,3 +162,65 @@ join tcustomer t2 on torder.cnumber = t2.cnumber
 left join treturn t3 on torder.onumber = t3.onumber
 group by t2.cname
 order by rate desc
+
+/**
+  26
+  부서별로 직급이 제일 높은 직원을 확인하려 한다. 이에 해당하는 직원의 부서명과 직급명, 직원명을 출력하시오
+ */
+
+select dname, ename, rname
+from (
+    select t2.dname as dname,t.ename as ename, t1.rname as rname, rank() over(partition by t2.dname order by t1.rnumber desc)  as rank
+    from temployee t
+    join trank t1 on t.rnumber = t1.rnumber
+    join tdepartment t2 on t.dnumber = t2.dnumber
+) as tmp
+where rank = 1;
+
+
+/**
+  27
+  입사일이 10년이 넘는 직원들에게는 해당 직원들의 평균판매량을 기준으로 추가수당을 주려한다.
+  2022년 2월 28일을 기준으로 해당 직원들의 평균 판매 금액을 출력하시오.
+  (반품 내역은 고려하지 않지만 퇴사자는 제외되어야 한다.)
+ */
+SELECT AVG(tBase.sell_SUM) AS 평균판매금액 FROM
+    (
+SELECT SUM(tpr.PCount*tit.Price) AS sell_SUM FROM tOrder AS tor
+JOIN tProduction AS tpr ON tpr.PNumber = tor.PNumber
+JOIN tItem AS tit ON tit.INumber = tpr.INumber
+JOIN tEmployee tem ON tem.ENumber = tpr.ENumber
+WHERE tem.StartDate < CAST('2022-02-28' AS TIMESTAMP) - CAST('10 year' AS INTERVAL)
+    AND tem.ResignationDate IS NULL
+GROUP BY tem.EName
+    ) AS tBase
+
+
+/**
+  28
+  직원들의 평균 불량률이 5%라고 가정하였을 때, 전체 직원명과 직원별 전체 생산량과 평균 불량률을
+  고려한 예상 불량품량과 실제로 나온 실제 불량품량을 직원명과 함께 모두 출력하시오.
+ */
+
+select tmp1.ename, tmp1.total, tmp1.past, tmp2.error
+from(
+        select temployee.enumber, temployee.ename as ename, sum(t.pcount) as total,sum(t.pcount) * 0.05 as past
+        from temployee
+                 join tproduction t on temployee.enumber = t.enumber
+        group by temployee.enumber
+) as tmp1
+left join (
+    select t4.enumber, sum(treturn.rcount) as error
+    from treturn
+             join treturnreason t on treturn.rrnumber = t.rrnumber
+             join torder t2 on treturn.onumber = t2.onumber
+             join tproduction t3 on t2.pnumber = t3.pnumber
+             join temployee t4 on t3.enumber = t4.enumber
+    where t.rreason = '불량'
+    group by t4.enumber
+
+) as tmp2 on tmp2.enumber = tmp1.enumber;
+
+
+
+
